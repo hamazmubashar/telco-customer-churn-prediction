@@ -59,4 +59,23 @@ Models were evaluated across Accuracy, Precision, Recall, F1 Score, and ROC-AUC:
 - **Machine Learning:** Scikit-Learn, XGBoost
 - **Deep Learning:** Keras / TensorFlow
 
+---
 
+## ▶️ Run It Locally
+
+```bash
+git clone https://github.com/hamazmubashar/telco-customer-churn-prediction.git
+cd telco-customer-churn-prediction
+pip install -r requirements.txt
+jupyter notebook Telco_Customer_Churn.ipynb
+```
+
+The dataset (`WA_Fn-UseC_-Telco-Customer-Churn.csv`, IBM Telco Customer Churn sample) is included in the repo.
+
+---
+
+## 👤 Author
+
+**Hamaz Mubashar** · [LinkedIn](https://www.linkedin.com/in/hamazmubashar) · [More projects](https://github.com/hamazmubashar)
+
+Licensed under the [MIT License](LICENSE).

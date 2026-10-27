@@ -1,67 +1,57 @@
-# 📊 Telco Customer Churn Prediction & Analytics
+<div align="center">
 
-An end-to-end data science project analyzing customer attrition for a telecommunications provider. This project evaluates multiple Machine Learning models—including Logistic Regression, Random Forest, XGBoost, and a Keras Deep Neural Network—to identify high-risk churn customers and propose retention strategies.
+# Telco Customer Churn Prediction
 
----
+**Why telecom customers leave, which of them are about to, and what to offer them instead.**
 
-## 📌 Project Overview
-Customer churn is a critical business metric for telecommunications companies. Retaining existing customers is significantly cheaper than acquiring new ones. The goal of this project is to:
-1. Identify key drivers of customer churn through Exploratory Data Analysis (EDA).
-2. Build, tune, and evaluate multiple classification models.
-3. Provide actionable business recommendations based on model insights.
+[![Python](https://img.shields.io/badge/Python-3-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-189FDD?style=for-the-badge)](https://xgboost.readthedocs.io/)
+[![Keras](https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white)](https://keras.io/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
----
-
-## 🧹 Data Cleaning & Preprocessing
-- **Missing Value Handling:** Discovered hidden string spaces (`' '`) in `TotalCharges` during unique value inspection. Converted them to `NaN`, cast the column to `float`, and removed missing entries.
-- **Categorical Encoding:** One-Hot Encoded categorical variables for machine learning compatibility.
-- **Feature Scaling:** Applied `StandardScaler` to numerical features for distance/gradient-based models (Logistic Regression & Neural Networks).
+</div>
 
 ---
 
-## 📈 Key EDA Findings
-- **Contract Type:** Month-to-month contract holders have the highest churn rate (**42.7%**) compared to two-year contract holders (**2.8%**).
-- **Internet Service:** Fiber optic subscribers churn significantly more (**41.9%**) than DSL users (**19.0%**).
-- **Payment Method:** Electronic check users exhibit a high churn rate (**45.3%**).
-- **Tenure:** Customer cancellation risk is concentrated in the early months (0–12 months).
+## The question
 
----
+Keeping a customer is cheaper than winning a new one, but only if you know who's about to leave early enough to act. Using IBM's Telco Customer Churn dataset, I looked for the patterns behind churn, compared seven models for spotting it, and turned the findings into retention ideas a business could actually try.
 
-## 🤖 Model Performance & Evaluation
+## What drives churn
 
-Models were evaluated across Accuracy, Precision, Recall, F1 Score, and ROC-AUC:
+- **Contract length matters most.** Month-to-month customers churn at 42.7%; two-year customers at 2.8%.
+- **Fibre customers leave more.** 41.9% churn on fibre optic versus 19.0% on DSL, which points at service quality or price rather than the product itself.
+- **Electronic-check payers are high risk**, at 45.3% churn.
+- **The first year is the danger zone.** Most cancellations happen within 12 months of signing up.
 
-| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Logistic Regression** | **0.8038** | **0.6476** | **0.5749** | **0.6091** | **0.8357** |
-| Neural Network (Keras) | 0.7903 | 0.6186 | 0.5508 | 0.5827 | 0.8265 |
-| XGBoost (Tuned) | 0.7896 | 0.6226 | 0.5294 | 0.5723 | 0.8319 |
-| Random Forest (Baseline) | 0.7868 | 0.6209 | 0.5080 | 0.5588 | 0.8181 |
-| Random Forest (Tuned) | 0.7889 | 0.6288 | 0.5027 | 0.5587 | 0.8345 |
-| XGBoost (Baseline) | 0.7711 | 0.5760 | 0.5267 | 0.5503 | 0.8114 |
-| Decision Tree (Baseline) | 0.7186 | 0.4701 | 0.4626 | 0.4663 | 0.6366 |
+## Comparing models
 
-> **Best Performing Model:** **Logistic Regression** achieved the highest overall **F1 Score (0.6091)** and **ROC-AUC (0.8357)**, showing that a scaled linear boundary captures the primary churn signals effectively.
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Logistic Regression** | **0.804** | **0.648** | **0.575** | **0.609** | **0.836** |
+| Neural network (Keras) | 0.790 | 0.619 | 0.551 | 0.583 | 0.827 |
+| XGBoost (tuned) | 0.790 | 0.623 | 0.529 | 0.572 | 0.832 |
+| Random Forest (tuned) | 0.789 | 0.629 | 0.503 | 0.559 | 0.835 |
+| Random Forest | 0.787 | 0.621 | 0.508 | 0.559 | 0.818 |
+| XGBoost | 0.771 | 0.576 | 0.527 | 0.550 | 0.811 |
+| Decision Tree | 0.719 | 0.470 | 0.463 | 0.466 | 0.637 |
 
----
+The simplest model won. Once the features were scaled, logistic regression beat XGBoost and a neural network on both F1 and ROC-AUC. That suggests churn here depends on a few strong, mostly linear signals, and it's a useful reminder to always run a simple baseline. It's also the easiest model to explain to a retention team.
 
-## 💡 Business Strategy & Recommendations
-1. **Contract Retention Incentives:** Offer a 10–15% bill discount to month-to-month users who transition to a 1-year contract.
-2. **Fiber Optic Service Quality:** Investigate service reliability issues and bundle free tech support for the first 6 months.
-3. **Auto-Pay Migration:** Encourage electronic check users to switch to automatic bank transfers with small billing credits.
+## Cleaning the data
 
----
+- `TotalCharges` looked numeric but held blank strings (`' '`) for new customers. I found them by inspecting unique values, converted them to missing, cast the column to float, and dropped those rows.
+- Categorical columns were one-hot encoded.
+- Numeric columns were standardised for the distance- and gradient-based models (logistic regression and the neural network).
 
-## 🛠️ Tech Stack & Libraries
-- **Language:** Python
-- **Data Manipulation:** Pandas, NumPy
-- **Visualization:** Matplotlib, Seaborn
-- **Machine Learning:** Scikit-Learn, XGBoost
-- **Deep Learning:** Keras / TensorFlow
+## Retention ideas
 
----
+1. **Move month-to-month customers onto contracts.** Offer a 10–15% discount for switching to a one-year plan.
+2. **Look into fibre service quality.** Investigate reliability complaints and include free tech support for the first six months.
+3. **Shift customers off electronic checks.** Give a small bill credit for switching to automatic bank payments.
 
-## ▶️ Run It Locally
+## Run it locally
 
 ```bash
 git clone https://github.com/hamazmubashar/telco-customer-churn-prediction.git
@@ -70,12 +60,14 @@ pip install -r requirements.txt
 jupyter notebook Telco_Customer_Churn.ipynb
 ```
 
-The dataset (`WA_Fn-UseC_-Telco-Customer-Churn.csv`, IBM Telco Customer Churn sample) is included in the repo.
+The dataset (`WA_Fn-UseC_-Telco-Customer-Churn.csv`) is included, so the notebook runs as is.
 
----
+## Tech stack
 
-## 👤 Author
+Python · pandas · NumPy · Matplotlib · Seaborn · scikit-learn · XGBoost · TensorFlow / Keras
+
+## Author
 
 **Hamaz Mubashar** · [LinkedIn](https://www.linkedin.com/in/hamazmubashar) · [More projects](https://github.com/hamazmubashar)
 
-Licensed under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE).
